@@ -1,0 +1,57 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "WeatherParse",
+        "description": "Address of your WeatherParse (or Acuparse 3.x) server, for example http://192.0.2.10",
+        "data": {
+          "url": "Address",
+          "verify_ssl": "Verify the HTTPS certificate",
+          "name": "Name (optional)"
+        },
+        "data_description": {
+          "name": "Starts every entity ID: My WeatherParse Station gives sensor.my_weatherparse_station_temperature. Leave empty for WeatherParse plus the address."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot reach the server at that address.",
+      "invalid_response": "The server answered, but not with WeatherParse dashboard data."
+    },
+    "abort": {
+      "already_configured": "This WeatherParse server is already set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Polling interval (seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature": {"name": "Temperature"},
+      "feels_like": {"name": "Feels like"},
+      "dew_point": {"name": "Dew point"},
+      "temperature_high": {"name": "High today"},
+      "temperature_low": {"name": "Low today"},
+      "humidity": {"name": "Humidity"},
+      "wind_speed": {"name": "Wind speed"},
+      "wind_gust": {"name": "Wind gust"},
+      "wind_direction": {"name": "Wind direction"},
+      "wind_direction_cardinal": {"name": "Wind direction (compass)"},
+      "pressure": {"name": "Pressure"},
+      "rain_today": {"name": "Rain today"},
+      "rain": {"name": "Rain"},
+      "last_updated": {"name": "Last reading"},
+      "uv_index": {"name": "UV index"},
+      "illuminance": {"name": "Light"},
+      "lightning_strikes_today": {"name": "Lightning strikes today"},
+      "lightning_distance": {"name": "Last strike distance"},
+      "lightning_last_strike": {"name": "Last strike"}
+    }
+  }
+}

@@ -1,0 +1,38 @@
+WEATHERPARSE FOR HOME ASSISTANT
+===============================
+
+Home Assistant integration for WeatherParse (https://github.com/mobilevoid/weatherparse), the AcuRite Access
+weather station server. It also works with Acuparse 3.x servers.
+
+It reads the station's dashboard data (/api/v1/json/dashboard/) on your network once a minute and creates sensors:
+temperature, feels like, dew point, today's high and low, humidity, wind speed, gust and direction, pressure,
+rain and rain today, last reading time, and for an Atlas: UV index, light and lightning (strikes today, distance,
+last strike). Sensors are only created for readings your station provides. Units follow your Home Assistant settings.
+
+Nothing is sent anywhere except requests to your own WeatherParse server.
+
+Install with HACS
+-----------------
+
+1. HACS > Integrations > three dots > Custom repositories.
+2. Repository: https://github.com/mobilevoid/weatherparse-homeassistant  Category: Integration.
+3. Install WeatherParse and restart Home Assistant.
+
+Manual install
+--------------
+
+Copy custom_components/weatherparse into your Home Assistant config/custom_components folder and restart.
+
+Set up
+------
+
+Settings > Devices & services > Add integration > WeatherParse. Enter the address of your WeatherParse server,
+for example http://192.0.2.10. Turn on "Verify the HTTPS certificate" only if the server has a real certificate.
+
+The polling interval (default 60 seconds, minimum 30) is under the integration's Configure button.
+
+License
+-------
+
+Apache License 2.0 (Apache-2.0), the same license as Home Assistant. See LICENSE.
+WeatherParse itself, the server, is AGPL-3.0.
