@@ -9,15 +9,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-import voluptuous as vol
-
-from homeassistant import config_entries
-from homeassistant.const import CONF_NAME
-from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResultType
-from homeassistant.setup import async_setup_component
-
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+import voluptuous as vol
 
 from custom_components.weatherparse.api import (
     WeatherParseConnectionError,
@@ -32,6 +25,11 @@ from custom_components.weatherparse.const import (
     DOMAIN,
     MIN_SCAN_INTERVAL,
 )
+from homeassistant import config_entries
+from homeassistant.const import CONF_NAME
+from homeassistant.core import HomeAssistant
+from homeassistant.data_entry_flow import FlowResultType
+from homeassistant.setup import async_setup_component
 
 FIXTURE = json.loads((Path(__file__).parent / "dashboard.json").read_text())
 URL = "http://192.0.2.10"  # documentation address, never a real station

@@ -53,7 +53,7 @@ def _number(value: Any) -> float | None:
 
 def _integer(value: Any) -> int | None:
     number = _number(value)
-    return None if number is None else int(round(number))
+    return None if number is None else round(number)
 
 
 def _timestamp(value: Any) -> datetime | None:
