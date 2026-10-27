@@ -1,6 +1,23 @@
 name: tests
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install ruff
+      - run: ruff check --target-version py313 custom_components tests
+      - run: python -m json.tool custom_components/weatherparse/manifest.json > /dev/null
+      - run: python -m json.tool hacs.json > /dev/null
+      - run: cmp custom_components/weatherparse/strings.json custom_components/weatherparse/translations/en.json
   pytest:
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +34,6 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          ignore: brands
   hassfest:
     runs-on: ubuntu-latest
     steps:

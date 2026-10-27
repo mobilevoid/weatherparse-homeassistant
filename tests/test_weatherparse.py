@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import copy
+from datetime import timedelta
 import json
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
@@ -23,7 +25,13 @@ from custom_components.weatherparse.api import (
     dashboard_url,
 )
 from custom_components.weatherparse.config_flow import normalize_url
-from custom_components.weatherparse.const import CONF_URL, CONF_VERIFY_SSL, DOMAIN
+from custom_components.weatherparse.const import (
+    CONF_SCAN_INTERVAL,
+    CONF_URL,
+    CONF_VERIFY_SSL,
+    DOMAIN,
+    MIN_SCAN_INTERVAL,
+)
 
 FIXTURE = json.loads((Path(__file__).parent / "dashboard.json").read_text())
 URL = "http://192.0.2.10"  # documentation address, never a real station
@@ -136,6 +144,28 @@ async def test_station_down_marks_unavailable(hass: HomeAssistant) -> None:
         await coordinator.async_refresh()
         await hass.async_block_till_done()
     assert hass.states.get("sensor.weatherparse_192_0_2_10_temperature").state == "unavailable"
+
+
+async def test_options_flow_sets_interval(hass: HomeAssistant) -> None:
+    entry = await _setup(hass, _data())
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "init"
+    with patch("custom_components.weatherparse.coordinator.fetch_dashboard", return_value=_data()):
+        result = await hass.config_entries.options.async_configure(result["flow_id"], {CONF_SCAN_INTERVAL: 120})
+        await hass.async_block_till_done()
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert entry.options == {CONF_SCAN_INTERVAL: 120}
+    # the entry reloads with the new interval
+    assert entry.runtime_data.update_interval == timedelta(seconds=120)
+
+
+async def test_options_flow_rejects_short_interval(hass: HomeAssistant) -> None:
+    entry = await _setup(hass, _data())
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    with pytest.raises(vol.Invalid):
+        await hass.config_entries.options.async_configure(result["flow_id"], {CONF_SCAN_INTERVAL: MIN_SCAN_INTERVAL - 1})
+    assert entry.options == {}
 
 
 async def test_unload(hass: HomeAssistant) -> None:

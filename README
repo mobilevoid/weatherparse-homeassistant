@@ -14,7 +14,9 @@ Nothing is sent anywhere except requests to your own WeatherParse server.
 Install with HACS
 -----------------
 
-1. HACS > Integrations > three dots > Custom repositories.
+Needs Home Assistant 2025.1 or newer.
+
+1. HACS > three dots > Custom repositories.
 2. Repository: https://github.com/mobilevoid/weatherparse-homeassistant  Category: Integration.
 3. Install WeatherParse and restart Home Assistant.
 
@@ -36,3 +38,7 @@ License
 
 Apache License 2.0 (Apache-2.0), the same license as Home Assistant. See LICENSE.
 WeatherParse itself, the server, is AGPL-3.0.
+
+The icon in custom_components/weatherparse/brand is the WeatherParse mark (a sun over two wind streams), made for
+WeatherParse by its authors and included here under Apache-2.0. Home Assistant 2026.3 and newer show it on the
+integration's page; older versions show a placeholder.
